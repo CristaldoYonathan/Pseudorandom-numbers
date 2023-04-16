@@ -1,14 +1,6 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Generador de n&uacute;meros aleatorios</title>
-</head>
-<body  style="background: #9ca3af">
+@extends('layouts.app', ['page' => __('Tables'), 'pageSlug' => 'tables'])
 
+@section('content')
     <h1>Generador de n&uacute;meros aleatorios</h1>
     <h3>Método de Fibonacci</h3>
 
@@ -28,8 +20,4 @@
         <br>
         <button type="submit">Generar</button>
     </form>
-
-
-
-</body>
-</html>
+@endsection
