@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NumerosAleatoriosController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::get('/index',[NumerosAleatoriosController::class, 'index'])->name('NA.index');
+Route::post('/fibonacci',[NumerosAleatoriosController::class, 'fibonacci'])->name('NA.fibonacci');
+
