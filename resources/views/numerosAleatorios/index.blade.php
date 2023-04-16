@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page' => __('Tables'), 'pageSlug' => 'tables'])
+@extends('layouts.app', ['page' => __('Tables'), 'pageSlug' => 'index'])
 
 @section('content')
     <h1>Generador de n&uacute;meros aleatorios</h1>
@@ -41,4 +41,30 @@
         <br>
         <button type="submit">Generar</button>
     </form>
+
+
+    <h3>Método de Congruencia Fundamental</h3>
+
+    <form class="needs-validation" action="{{ route('NA.congruencias') }}" method="POST">
+        @csrf
+        <div class="form-group">
+            <label for="cantidad">Cantidad de números a generar:</label>
+            <input type="number" class="form-control" name="cantidad" id="cantidad" value="10" required>
+        </div>
+        <div class="form-group">
+            <label for="semillav1">Primer Semilla(V1):</label>
+            <input type="number" class="form-control" name="semillav1" id="semillav1" value="300" required>
+        </div>
+        <div class="form-group">
+            <label for="semillav2">Segunda Semilla(V2):</label>
+            <input type="number" class="form-control" name="semillav2" id="semillav2" value="400" required>
+        </div>
+        <div class="form-group">
+            <label for="control">Parámetro de control(A):</label>
+            <input type="number" class="form-control" name="control" id="control" value="1000" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Generar</button>
+    </form>
+
+
 @endsection

@@ -22,6 +22,14 @@
                 </a>
             </li>
 
+{{--            Metodo de congruencia fundamental--}}
+            <li @if ($pageSlug == 'congruencias') class="active " @endif>
+                <a href="{{ route('NA.congruencias') }}">
+                    <i class="tim-icons icon-app"></i>
+                    <p>{{ __('Congruencia') }}</p>
+                </a>
+            </li>
+
 {{--            <li>--}}
 {{--                <a data-toggle="collapse" href="#laravel-examples" aria-expanded="true">--}}
 {{--                    <i class="fab fa-laravel" ></i>--}}
