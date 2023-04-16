@@ -40,6 +40,23 @@ class NumerosAleatoriosController extends Controller
         }
 
         return view('numerosAleatorios.show', compact('numeros'));
+    }
 
+    public function congruencias(Request $request){
+        $numeros = [];
+        $v1 = $request->input('semillav1');
+        $cantidad = $request->input('cantidad');
+        $a = $request->input('control');
+        $c = $request->input('control2');
+        $m = $request->input('control3');
+        $numeros[0] = intval($v1);
+
+        for ($i=1; $i < $cantidad; $i++) {
+            $v2 = ($a*$v1+$c)%$m;
+            $numeros[] = $v2;
+            $v1 = $v2;
+        }
+
+        return view('numerosAleatorios.show', compact('numeros'));
     }
 }

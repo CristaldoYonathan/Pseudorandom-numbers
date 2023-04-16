@@ -20,8 +20,6 @@ Route::get('/', function () {
 });
 
 
-Route::get('/index',[NumerosAleatoriosController::class, 'index'])->name('NA.index');
-Route::post('/fibonacci',[NumerosAleatoriosController::class, 'fibonacci'])->name('NA.fibonacci');
 
 
 Auth::routes();
@@ -39,6 +37,10 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('tables', ['as' => 'pages.tables', 'uses' => 'App\Http\Controllers\PageController@tables']);
 		Route::get('typography', ['as' => 'pages.typography', 'uses' => 'App\Http\Controllers\PageController@typography']);
 		Route::get('upgrade', ['as' => 'pages.upgrade', 'uses' => 'App\Http\Controllers\PageController@upgrade']);
+        Route::get('/index',[NumerosAleatoriosController::class, 'index'])->name('NA.index');
+        Route::post('/fibonacci',[NumerosAleatoriosController::class, 'fibonacci'])->name('NA.fibonacci');
+        Route::post('/congruencias',[NumerosAleatoriosController::class, 'congruencias'])->name('NA.congruencias');
+
 });
 
 Route::group(['middleware' => 'auth'], function () {
