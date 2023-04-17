@@ -15,16 +15,16 @@
             </li>
 
             {{--            crear apartado para el algoritmo de fibonacci--}}
-            <li @if ($pageSlug == 'index') class="active " @endif>
-                <a href="{{ route('NA.index') }}">
+            <li @if ($pageSlug == 'indexF') class="active " @endif>
+                <a href="{{ route('NA.indexF') }}">
                     <i class="tim-icons icon-chart-bar-32"></i>
                     <p>{{ __('Fibonacci') }}</p>
                 </a>
             </li>
 
 {{--            Metodo de congruencia fundamental--}}
-            <li @if ($pageSlug == 'congruencias') class="active " @endif>
-                <a href="{{ route('NA.congruencias') }}">
+            <li @if ($pageSlug == 'indexC') class="active " @endif>
+                <a href="{{ route('NA.indexC') }}">
                     <i class="tim-icons icon-app"></i>
                     <p>{{ __('Congruencia') }}</p>
                 </a>

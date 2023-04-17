@@ -6,9 +6,13 @@ use Illuminate\Http\Request;
 
 class NumerosAleatoriosController extends Controller
 {
-    public function index()
+    public function indexF()
     {
-        return view('numerosAleatorios.index');
+        return view('numerosAleatorios.indexF');
+    }
+    public function indexC()
+    {
+        return view('numerosAleatorios.indexC');
     }
 
     public function fibonacci(Request $request){
@@ -39,7 +43,7 @@ class NumerosAleatoriosController extends Controller
             }
         }
 
-        return view('numerosAleatorios.show', compact('numeros'));
+        return view('numerosAleatorios.indexF', compact('numeros'));
     }
 
     public function congruencias(Request $request){
@@ -68,8 +72,8 @@ class NumerosAleatoriosController extends Controller
 //            }
 //            return $v;
 //        }
-        dd($numeros);
+//        dd($numeros);
 
-        return view('numerosAleatorios.congruencia', compact('numeros'));
+        return view('numerosAleatorios.indexC', compact('numeros'));
     }
 }

@@ -1,7 +1,10 @@
-@extends('layouts.app', ['page' => __('Tables'), 'pageSlug' => 'index'])
+@extends('layouts.app', ['page' => __('Tables'), 'pageSlug' => 'indexF'])
 
 @section('content')
-    <h1>Generador de n&uacute;meros aleatorios</h1>
+    <h1 class="text-center">Generador de n&uacute;meros aleatorios</h1>
+
+    <hr style="height: 5px; background: #1a202c">
+
     <h3>Método de Fibonacci</h3>
 
     <form action="{{ route('NA.fibonacci') }}" method="POST">
@@ -21,7 +24,29 @@
         <button type="submit">Generar</button>
     </form>
 
-    <hr style="height: 5px; background: #1a202c">
+    <div class="col-6">
+        <h3 class="text-center" >Resultados de la generación</h3>
+        @if(isset($numeros))
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Iteración</th>
+                    <th scope="col">Valor</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($numeros as $numero)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $numero}}</td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        @endif
+    </div>
+
+<!--    <hr style="height: 5px; background: #1a202c">
 
     <div class="row">
         <div class="col-6">
@@ -62,10 +87,28 @@
                 <button type="submit" class="btn btn-primary">Generar</button>
             </form>
         </div>
-        <div class="col-6">
-            <h3 class="text-center" >Resultados de la generación</h3>
-        </div>
-    </div>
+            <div class="col-6">
+                <h3 class="text-center" >Resultados de la generación</h3>
+                @if(isset($numeros))
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">Iteración</th>
+                            <th scope="col">Valor</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($numeros as $numero)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $numero}}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                @endif
+            </div>
+    </div>-->
 
 
 @endsection
