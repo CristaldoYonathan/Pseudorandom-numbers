@@ -3,48 +3,85 @@
 @section('content')
     <h1 class="text-center">Generador de n&uacute;meros aleatorios</h1>
 
-    <hr style="height: 5px; background: #1a202c">
-
-    <h3>Método de Fibonacci</h3>
-
-    <form action="{{ route('NA.fibonacci') }}" method="POST">
-        @csrf
-        <label for="cantidad">Cantidad de n&uacute;meros a generar</label>
-        <input type="number" name="cantidad" id="cantidad" value="10">
-        <br>
-        <label for="semillav1">Primer Semilla(V1)</label>
-        <input type="number" name="semillav1" id="semillav1" value="300">
-        <br>
-        <label for="semillav2">Segunda Semilla(V2)</label>
-        <input type="number" name="semillav2" id="semillav2" value="400">
-        <br>
-        <label for="control">Parámetro de control(A)</label>
-        <input type="number" name="control" id="control" value="1000">
-        <br>
-        <button type="submit">Generar</button>
-    </form>
-
-    <div class="col-6">
-        <h3 class="text-center" >Resultados de la generación</h3>
-        @if(isset($numeros))
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th scope="col">Iteración</th>
-                    <th scope="col">Valor</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($numeros as $numero)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $numero}}</td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-        @endif
+    <div class="row">
+        <div class="col-12">
+            <hr>
+        </div>
     </div>
+
+    <div class="container">
+
+        <div class="row ">
+            <div class="col-6 d-flex flex-column align-items-center">
+                <h3 class="text-center">Método de Fibonacci</h3>
+                <form action="{{ route('NA.fibonacci') }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="cantidad">Cantidad de números a generar</label>
+                        <input type="number" class="form-control" name="cantidad" id="cantidad" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label for="semillav1">Primer Semilla(V1)</label>
+                        <input type="number" class="form-control" name="semillav1" id="semillav1" value="300">
+                    </div>
+                    <div class="form-group">
+                        <label for="semillav2">Segunda Semilla(V2)</label>
+                        <input type="number" class="form-control" name="semillav2" id="semillav2" value="400">
+                    </div>
+                    <div class="form-group">
+                        <label for="control">Parámetro de control(A)</label>
+                        <input type="number" class="form-control" name="control" id="control" value="1000">
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Generar</button>
+                </form>
+            </div>
+            <div class="col-6 d-flex flex-column align-items-center">
+                <h3 class="text-center" >Resultados de la generación</h3>
+                @if(isset($numeros))
+                    <table class="table tablesorter">
+                        <thead>
+                        <tr>
+                            <th >Iteración</th>
+                            <th >Valor</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($numeros as $numero)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $numero}}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                @endif
+            </div>
+        </div>
+    </div>
+
+
+
+{{--    <div class="col-6">--}}
+{{--        <h3 class="text-center" >Resultados de la generación</h3>--}}
+{{--        @if(isset($numeros))--}}
+{{--            <table class="table table-striped">--}}
+{{--                <thead>--}}
+{{--                <tr>--}}
+{{--                    <th scope="col">Iteración</th>--}}
+{{--                    <th scope="col">Valor</th>--}}
+{{--                </tr>--}}
+{{--                </thead>--}}
+{{--                <tbody>--}}
+{{--                @foreach($numeros as $numero)--}}
+{{--                    <tr>--}}
+{{--                        <td>{{ $loop->iteration }}</td>--}}
+{{--                        <td>{{ $numero}}</td>--}}
+{{--                    </tr>--}}
+{{--                @endforeach--}}
+{{--                </tbody>--}}
+{{--            </table>--}}
+{{--        @endif--}}
+{{--    </div>--}}
 
 <!--    <hr style="height: 5px; background: #1a202c">
 

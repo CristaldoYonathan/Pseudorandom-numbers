@@ -3,9 +3,13 @@
 @section('content')
     <h1 class="text-center">Generador de n&uacute;meros aleatorios</h1>
 
-    <hr style="height: 5px; background: #1a202c">
-
+{{--    linea de separación--}}
     <div class="row">
+        <div class="col-12">
+            <hr>
+        </div>
+    </div>
+    <div class="row mt-2">
         <div class="col-6 d-flex flex-column justify-content-center align-items-center">
             <h3 class="text-center" >Método de Congruencia Fundamental</h3>
 
@@ -49,11 +53,11 @@
         <div class="col-6">
             <h3 class="text-center" >Resultados de la generación</h3>
             @if(isset($numeros))
-                <table class="table table-striped">
+                <table class="table tablesorter">
                     <thead>
                     <tr>
-                        <th scope="col">Iteración</th>
-                        <th scope="col">Valor</th>
+                        <th >Iteración</th>
+                        <th >Valor</th>
                     </tr>
                     </thead>
                     <tbody>
