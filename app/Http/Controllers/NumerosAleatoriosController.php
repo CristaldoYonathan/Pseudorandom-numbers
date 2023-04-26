@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 class NumerosAleatoriosController extends Controller
 {
+
     public function indexF()
     {
         return view('numerosAleatorios.indexF');
@@ -81,6 +82,7 @@ class NumerosAleatoriosController extends Controller
 
     public function chiCuadradoUnformidad($numeros){
 
+
         $significancia = 0.05;//Nivel de signficacia es decir alfa
         $n = count($numeros);//Cantidad de numeros generados(tamaño de la muestra)
         $k = sqrt($n);//Cantidad de intervalos
@@ -114,9 +116,16 @@ class NumerosAleatoriosController extends Controller
         }
 
         //Se calcula el chi cuadrado limite tomando los grados de libertad y el nivel de significancia
-/*        $chiLimite = stats_dens_chisquare_inv($significancia, $gradosLibertad);*/
+        $chiLimite = stats_dens_chisquare_inv($significancia, $gradosLibertad);
 
-        sort($numeros);
+
+////        verificar hipotesis
+//        if($chiCalculado < $chiLimite){
+//            echo "Se acepta la hipotesis de uniformidad";
+//        }else{
+//            echo "Se rechaza la hipotesis de uniformidad";
+//        }
+//        sort($numeros);
 
         dd($numeros,$n,$k,$rango_intervalo,$intervalos, $fo, $fe, $chiCalculado,$chiLimite);
 
