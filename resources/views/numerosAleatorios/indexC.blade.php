@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="row mt-2">
-        <div class="col-6 d-flex flex-column justify-content-center align-items-center">
+        <div class="col-6 d-flex flex-column align-items-center">
             <h3 class="text-center" >Método de Congruencia Fundamental</h3>
 
             <p class="text-center h4">
@@ -22,32 +22,37 @@
                 @csrf
                 <div class="form-group">
                     <label for="cantidadCong">Cantidad de números a generar:</label>
-                    <input type="number" class="form-control" name="cantidadCong" id="cantidadCong" value="10" required>
+                    <input type="number" class="form-control" name="cantidadCong" id="cantidadCong" value="100" required>
                 </div>
                 <div class="form-group">
                     <label for="semillavi">Semilla(V<sub>i</sub>):</label>
-                    <input type="number" class="form-control" name="semillavi" id="semillavi" value="300" required>
+                    <input type="number" class="form-control" name="semillavi" id="semillavi" value="16561" required>
                 </div>
                 <div class="form-group">
                     <label for="semiillavik">Segunda semilla(V<sub>i-k</sub>):</label>
-                    <input type="number" class="form-control" name="semiillavik" id="semiillavik" value="1000" required>
+                    <input type="number" class="form-control" name="semiillavik" id="semiillavik" value="17471" required>
                 </div>
                 <div class="form-group">
                     <label for="constanteA">Primer Constante(a):</label>
-                    <input type="number" class="form-control" name="constanteA" id="constanteA" value="400" required>
+                    <input type="number" class="form-control" name="constanteA" id="constanteA" value="16661" required>
                 </div>
                 <div class="form-group">
                     <label for="constanteC">Segunda Constante(c):</label>
-                    <input type="number" class="form-control" name="constanteC" id="constanteC" value="1000" required>
+                    <input type="number" class="form-control" name="constanteC" id="constanteC" value="17971" required>
                 </div>
                 <div class="form-group">
                     <label for="constanteM">Cuarta Constante(m):</label>
-                    <input type="number" class="form-control" name="constanteM" id="constanteM" value="1000" required>
+                    <input type="number" class="form-control" name="constanteM" id="constanteM" value="18181" required>
                 </div>
                 <div class="form-group text-center mt-4">
                     <button type="submit" class="btn btn-primary">Generar</button>
                 </div>
             </form>
+            @if(isset($numeros))
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary mt-3">Probar aleatoriedad</button>
+                </div>
+            @endif
         </div>
 
         <div class="col-6">

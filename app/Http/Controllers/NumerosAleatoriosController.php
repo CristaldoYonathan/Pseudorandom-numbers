@@ -43,6 +43,8 @@ class NumerosAleatoriosController extends Controller
             }
         }
 
+        $this->chiCuadradoUnformidad($numeros);
+
         return view('numerosAleatorios.indexF', compact('numeros'));
     }
 
@@ -57,7 +59,7 @@ class NumerosAleatoriosController extends Controller
         $numeros[0] = intval($v1);
         $numeros[1] = intval($v2);
 
-        for ($i=1; $i < $cantidad; $i++) {
+        for ($i=2; $i < $cantidad; $i++) {
             $v3 = (($a*$v1)+($c*$v2)) % $m;
             $numeros[] = $v3;
             $v1 = $v2;
@@ -65,15 +67,59 @@ class NumerosAleatoriosController extends Controller
 
         }
 
-        function congruenciaFundamental($v1, $v2, $a, $k, $m, $cantidad){
+ /*       function congruenciaFundamental($v1, $v2, $a, $k, $m, $cantidad){
             $v = array($v1, $v2);
             for($i = 1; $i < $cantidad; $i++){
                 $v[$i] = (($a * $v[$i-1]) + ($k * $v[$i-2])) % $m;
             }
             return $v;
-        }
+        }*/
 //        dd($numeros);
 
         return view('numerosAleatorios.indexC', compact('numeros'));
+    }
+
+    public function chiCuadradoUnformidad($numeros){
+
+        $significancia = 0.05;//Nivel de signficacia es decir alfa
+        $n = count($numeros);//Cantidad de numeros generados(tamaño de la muestra)
+        $k = sqrt($n);//Cantidad de intervalos
+        $rango_intervalo = max($numeros)/$k;//Amplitud de los intervalos
+        $intervalos = array(array(1,2));//Matriz de intervalos(limites inferiores y superiores)
+        $fo = array($k);//Frecuencia observada
+        $fe = $n/$k;//Frecuencia esperada
+        $chiCalculado = 0;//Chi cuadrado calculado
+        $chiLimite = 0;//Chi cuadrado limite
+        $gradosLibertad = $k-1;//Grados de libertad
+
+        //Se llena la matriz de intervalos
+        for($i = 0; $i < $k; $i++){
+            $intervalos[$i][0] = $i*$rango_intervalo;
+            $intervalos[$i][1] = ($i+1)*$rango_intervalo;
+        }
+
+        //Se llena el arreglo de frecuencia observada de cada intervalo
+        for($i = 0; $i < $k; $i++){
+            $fo[$i] = 0;
+            for($j = 0; $j < $n; $j++){
+                if($numeros[$j] >= $intervalos[$i][0] && $numeros[$j] < $intervalos[$i][1]){
+                    $fo[$i]++;
+                }
+            }
+        }
+
+        //Se calcula el chi cuadrado
+        for($i = 0; $i < $k; $i++){
+            $chiCalculado += pow(($fo[$i]-$fe),2)/$fe;
+        }
+
+        //Se calcula el chi cuadrado limite tomando los grados de libertad y el nivel de significancia
+/*        $chiLimite = stats_dens_chisquare_inv($significancia, $gradosLibertad);*/
+
+        sort($numeros);
+
+        dd($numeros,$n,$k,$rango_intervalo,$intervalos, $fo, $fe, $chiCalculado,$chiLimite);
+
+
     }
 }
