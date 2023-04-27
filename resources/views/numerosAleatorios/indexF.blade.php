@@ -20,27 +20,27 @@
                     <div class="form-group">
                         <label for="cantidad">Cantidad de números a generar</label>
                         <div class="form-group">
-                            <input type="number" class="form-control" name="cantidad" id="cantidad" value="10">
+                            <input type="number" class="form-control" name="cantidad" id="cantidad" placeholder="10">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="semillav1">Primer Semilla(V1)</label>
                         <div class="form-group">
-                            <input type="number" class="form-control" name="semillav1" id="semillav1" value="300">
+                            <input type="number" class="form-control" name="semillav1" id="semillav1" placeholder="300">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="semillav2">Segunda Semilla(V2)</label>
                         <div class="form-group">
-                            <input type="number" class="form-control" name="semillav2" id="semillav2" value="400">
+                            <input type="number" class="form-control" name="semillav2" id="semillav2" placeholder="400">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="control">Parámetro de control(A)</label>
                         <div class="form-group">
-                            <input type="number" class="form-control" name="control" id="control" value="1000">
+                            <input type="number" class="form-control" name="control" id="control" placeholder="1000">
                         </div>
                     </div>
                     <div class="text-center">
@@ -56,6 +56,25 @@
             <div class="col-6 d-flex flex-column align-items-center" style="max-height: 400px; overflow: auto;">
                 <h3 class="text-center" >Resultados de la generación</h3>
                 @if(isset($numeros))
+                    <div class="form-group">
+                        <h4>Tabla de datos utilizada</h4>
+                        <table class="table tablesorter">
+                            <thead>
+                            <tr>
+                                <th >V<sub>i</sub></th>
+                                <th >V<sub>i-k</sub></th>
+                                <th >a</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{$numeros[0]}}</td>
+                                <td>{{$numeros[1]}}</td>
+                                <td>{{$a}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <table class="table tablesorter">
                         <thead>
                         <tr>
@@ -87,7 +106,7 @@
 
             $('#cantidad').on('input change', function () {
                 // cambiar la clase de los inputs
-                if ($(this).val() < 10) {
+                if ($(this).val() < 10 || $(this).val() === '') {
                     // el padre agrege la clase has-danger
                     $(this).parent().removeClass('has-success');
                     $(this).parent().addClass('has-danger');
@@ -99,7 +118,7 @@
             });
             $('#semillav1').on('input change', function () {
                 // cambiar la clase de los inputs
-                if ($(this).val() < 100 || $(this).val() > 999999) {
+                if ($(this).val() < 100 || $(this).val() > 999999 || $(this).val() === '') {
                     // el padre agrege la clase has-danger
                     $(this).parent().removeClass('has-success');
                     $(this).parent().addClass('has-danger');
@@ -110,7 +129,7 @@
             });
             $('#semillav2').on('input change', function () {
                 // cambiar la clase de los inputs
-                if ($(this).val() < 100 || $(this).val() > 999999) {
+                if ($(this).val() < 100 || $(this).val() > 999999 || $(this).val() === '') {
                     // el padre agrege la clase has-danger
                     $(this).parent().removeClass('has-success');
                     $(this).parent().addClass('has-danger');
@@ -121,7 +140,7 @@
             });
             $('#control').on('input change', function () {
                 // cambiar la clase de los inputs
-                if ($(this).val() < 100 || $(this).val() > 999999) {
+                if ($(this).val() < 100 || $(this).val() > 999999 || $(this).val() === '') {
                     // el padre agrege la clase has-danger
                     $(this).parent().removeClass('has-success');
                     $(this).parent().addClass('has-danger');

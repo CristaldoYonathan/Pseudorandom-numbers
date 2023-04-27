@@ -44,9 +44,9 @@ class NumerosAleatoriosController extends Controller
             }
         }
 
-        $this->chiCuadradoUnformidad($numeros);
+/*        $this->chiCuadradoUnformidad($numeros);*/
 
-        return view('numerosAleatorios.indexF', compact('numeros'));
+        return view('numerosAleatorios.indexF', compact('numeros','a'));
     }
 
     public function congruencias(Request $request){
@@ -68,16 +68,7 @@ class NumerosAleatoriosController extends Controller
 
         }
 
- /*       function congruenciaFundamental($v1, $v2, $a, $k, $m, $cantidad){
-            $v = array($v1, $v2);
-            for($i = 1; $i < $cantidad; $i++){
-                $v[$i] = (($a * $v[$i-1]) + ($k * $v[$i-2])) % $m;
-            }
-            return $v;
-        }*/
-//        dd($numeros);
-
-        return view('numerosAleatorios.indexC', compact('numeros'));
+        return view('numerosAleatorios.indexC', compact('numeros','a','c','m','v1','v2'));
     }
 
     public function chiCuadradoUnformidad($numeros){

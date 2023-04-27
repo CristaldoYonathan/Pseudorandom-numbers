@@ -23,42 +23,42 @@
                 <div class="form-group">
                     <label for="cantidadCong">Cantidad de números a generar:</label>
                     <div class="form-group">
-                        <input type="number" class="form-control" name="cantidadCong" id="cantidadCong" value="10" required>
+                        <input type="number" class="form-control" name="cantidadCong" id="cantidadCong" placeholder="10">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="semillavi">Semilla(V<sub>i</sub>):</label>
                     <div class="form-group">
-                        <input type="number" class="form-control" name="semillavi" id="semillavi" value="300" required>
+                        <input type="number" class="form-control" name="semillavi" id="semillavi" placeholder="300">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="semiillavik">Segunda semilla(V<sub>i-k</sub>):</label>
                     <div class="form-group">
-                        <input type="number" class="form-control" name="semiillavik" id="semiillavik" value="1000" required>
+                        <input type="number" class="form-control" name="semiillavik" id="semiillavik"  placeholder="1000">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="constanteA">Primer Constante(a):</label>
                     <div class="form-group">
-                        <input type="number" class="form-control" name="constanteA" id="constanteA" value="400" required>
+                        <input type="number" class="form-control" name="constanteA" id="constanteA" placeholder="400">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="constanteC">Segunda Constante(c):</label>
                     <div class="form-group">
-                        <input type="number" class="form-control" name="constanteC" id="constanteC" value="1000" required>
+                        <input type="number" class="form-control" name="constanteC" id="constanteC"  placeholder="1000">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="constanteM">Cuarta Constante(m):</label>
                     <div class="form-group">
-                        <input type="number" class="form-control" name="constanteM" id="constanteM" value="1000" required>
+                        <input type="number" class="form-control" name="constanteM" id="constanteM"  placeholder="1000">
                     </div>
                 </div>
 
@@ -76,6 +76,29 @@
         <div class="col-6" style="max-height: 550px; overflow: auto;">
             <h3 class="text-center" >Resultados de la generación</h3>
             @if(isset($numeros))
+                <div class="form-group">
+                    <h4>Tabla de datos utilizada</h4>
+                    <table class="table tablesorter">
+                        <thead>
+                        <tr>
+                            <th >V<sub>i</sub></th>
+                            <th >V<sub>i-k</sub></th>
+                            <th >a</th>
+                            <th >c</th>
+                            <th >m</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{$numeros[0]}}</td>
+                                <td>{{$numeros[1]}}</td>
+                                <td>{{$a}}</td>
+                                <td>{{$c}}</td>
+                                <td>{{$m}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <table class="table tablesorter">
                     <thead>
                     <tr>
@@ -107,7 +130,7 @@
 
             // validación para campo cantidadCong
             $('#cantidadCong').on('input change', function () {
-                if ($(this).val() < 10 || $(this).val() % 1 != 0) {
+                if ($(this).val() < 10 || $(this).val() % 1 !== 0 || $(this).val() === '') {
                     $(this).parent().removeClass('has-success');
                     $(this).parent().addClass('has-danger');
                 } else {
@@ -119,7 +142,7 @@
             // validación para campo semillavi
             $('#semillavi').on('input change', function () {
                 $('#constanteM').trigger('change');
-                if ($(this).val() < 0 || $(this).val() % 1 != 0) {
+                if ($(this).val() < 0 || $(this).val() % 1 !== 0 || $(this).val() === '') {
                     $(this).parent().removeClass('has-success');
                     $(this).parent().addClass('has-danger');
                 } else {
@@ -131,7 +154,7 @@
 
             // validación para campo semiillavik
             $('#semiillavik').on('input change', function () {
-                if ($(this).val() < 0 || $(this).val() % 1 != 0) {
+                if ($(this).val() < 0 || $(this).val() % 1 !== 0 || $(this).val() === '') {
                     $(this).parent().removeClass('has-success');
                     $(this).parent().addClass('has-danger');
                 } else {
@@ -143,7 +166,7 @@
             // validación para campo constanteA
             $('#constanteA').on('input change', function () {
                 $('#constanteM').trigger('change');
-                if ($(this).val() < 0 || $(this).val() % 1 != 0) {
+                if ($(this).val() < 0 || $(this).val() % 1 !== 0 || $(this).val() === '') {
                     $(this).parent().removeClass('has-success');
                     $(this).parent().addClass('has-danger');
                 } else {
@@ -154,7 +177,7 @@
 
             // validación para campo constanteC
             $('#constanteC').on('input change', function () {
-                if ($(this).val() < 0 || $(this).val() % 1 != 0) {
+                if ($(this).val() < 0 || $(this).val() % 1 !== 0 || $(this).val() === '') {
                     $(this).parent().removeClass('has-success');
                     $(this).parent().addClass('has-danger');
                 } else {
@@ -171,7 +194,7 @@
 
                 console.log(constanteM, constanteA, semillavi);
 
-                if (constanteM <= 0 || constanteM % 1 !== 0 || constanteM < constanteA || constanteM < semillavi) {
+                if (constanteM <= 0 || constanteM % 1 !== 0 || constanteM < constanteA || constanteM < semillavi || $(this).val() === '') {
                     $(this).parent().removeClass('has-success');
                     $(this).parent().addClass('has-danger');
                 } else {
