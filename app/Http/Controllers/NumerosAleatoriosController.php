@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\NumerosCongruencia;
+use App\Models\NumerosFibonacci;
 use Illuminate\Http\Request;
 
 class NumerosAleatoriosController extends Controller
@@ -28,6 +30,13 @@ class NumerosAleatoriosController extends Controller
         $numeros[0] = intval($v1);
         $numeros[1] = intval($v2);
 
+        $this->fibonacciFormula($v1, $v2, $cantidad, $a, $numeros);
+
+        return view('numerosAleatorios.indexF', compact('numeros','a','cantidad'));
+    }
+
+    public function fibonacciFormula($v1, $v2, $cantidad, $a, &$numeros){
+
         for ($i=2; $i < $cantidad; $i++) {
             if ($v2+$v1 <= $a){
                 $k = 0;
@@ -43,10 +52,6 @@ class NumerosAleatoriosController extends Controller
                 $numeros[] = $v3;
             }
         }
-
-/*        $this->chiCuadradoUnformidad($numeros);*/
-
-        return view('numerosAleatorios.indexF', compact('numeros','a'));
     }
 
     public function congruencias(Request $request){
@@ -58,68 +63,65 @@ class NumerosAleatoriosController extends Controller
         $c = $request->input('constanteC');
         $m = $request->input('constanteM');
         $numeros[0] = intval($v1);
-        $numeros[1] = intval($v2);
 
-        for ($i=2; $i < $cantidad; $i++) {
-            $v3 = (($a*$v1)+($c*$v2)) % $m;
-            $numeros[] = $v3;
-            $v1 = $v2;
-            $v2 = $v3;
-
+        for ($i=1; $i < $v2; $i++) {
+            $numeros[] = rand(1,10000);
         }
 
-        return view('numerosAleatorios.indexC', compact('numeros','a','c','m','v1','v2'));
+        /*V i+1 =(a V i + c V i-k) mod m*/
+
+        for ($i=$v2; $i < $cantidad; $i++) {
+            $v3 = (($a*$numeros[$i-$v2])+($c*$numeros[$i-1])) % $m;
+            $numeros[] = $v3;
+        }
+
+        return view('numerosAleatorios.indexC', compact('numeros','a','c','m','v1','v2','cantidad'));
     }
 
-    public function chiCuadradoUnformidad($numeros){
+    public function storeF(Request $request){
 
+/*        dd($request->all());*/
 
-        $significancia = 0.05;//Nivel de signficacia es decir alfa
-        $n = count($numeros);//Cantidad de numeros generados(tamaño de la muestra)
-        $k = sqrt($n);//Cantidad de intervalos
-        $rango_intervalo = max($numeros)/$k;//Amplitud de los intervalos
-        $intervalos = array(array(1,2));//Matriz de intervalos(limites inferiores y superiores)
-        $fo = array($k);//Frecuencia observada
-        $fe = $n/$k;//Frecuencia esperada
-        $chiCalculado = 0;//Chi cuadrado calculado
-        $chiLimite = 0;//Chi cuadrado limite
-        $gradosLibertad = $k-1;//Grados de libertad
+        //obtenemos los datos
+        $numerosA = json_decode($request->input('numerosGenerados'),true);
+        $a = $request->input('control');
+        $cantidad = $request->input('cantidad');
+        $v1 = $numerosA[0];
+        $v2 = $numerosA[1];
 
-        //Se llena la matriz de intervalos
-        for($i = 0; $i < $k; $i++){
-            $intervalos[$i][0] = $i*$rango_intervalo;
-            $intervalos[$i][1] = ($i+1)*$rango_intervalo;
-        }
+        //guardamos los datos
+        $datos = new NumerosFibonacci();
+        $datos->valoresBaseF = "C=".$cantidad." A=".$a." V1=".$v1." V2=".$v2;
+        $datos->valoresGeneradosF = json_encode($numerosA);//guardamos los numeros generados en formato json para poder recuperarlos
+        $datos->user_id = auth()->user()->id;
 
-        //Se llena el arreglo de frecuencia observada de cada intervalo
-        for($i = 0; $i < $k; $i++){
-            $fo[$i] = 0;
-            for($j = 0; $j < $n; $j++){
-                if($numeros[$j] >= $intervalos[$i][0] && $numeros[$j] < $intervalos[$i][1]){
-                    $fo[$i]++;
-                }
-            }
-        }
+/*        dd($datos);*/
 
-        //Se calcula el chi cuadrado
-        for($i = 0; $i < $k; $i++){
-            $chiCalculado += pow(($fo[$i]-$fe),2)/$fe;
-        }
+        $datos->save();
 
-        //Se calcula el chi cuadrado limite tomando los grados de libertad y el nivel de significancia
-        $chiLimite = stats_dens_chisquare_inv($significancia, $gradosLibertad);
+        return redirect()->route('NA.indexF')->with('aleatorio','ok');
+    }
 
+    public function storeC(Request $request){
 
-////        verificar hipotesis
-//        if($chiCalculado < $chiLimite){
-//            echo "Se acepta la hipotesis de uniformidad";
-//        }else{
-//            echo "Se rechaza la hipotesis de uniformidad";
-//        }
-//        sort($numeros);
+/*        dd($request->all());*/
+        //obtenemos los datos
+        $numerosA = json_decode($request->input('numerosGenerados'),true);
+        $a = $request->input('a');
+        $c = $request->input('c');
+        $m = $request->input('m');
+        $cantidad = $request->input('cantidad');
+        $v1 = $numerosA[0];
+        $v2 = $request->input('v2');
 
-        dd($numeros,$n,$k,$rango_intervalo,$intervalos, $fo, $fe, $chiCalculado,$chiLimite);
+        //guardamos los datos
+        $datos = new NumerosCongruencia();
+        $datos->valoresBaseC = "C=".$cantidad." A=".$a." C=".$c." M=".$m." V1=".$v1." V2=".$v2;
+        $datos->valoresGeneradosC = json_encode($numerosA);//guardamos los numeros generados en formato json para poder recuperarlos
+        $datos->user_id = auth()->user()->id;
+/*        dd($datos);*/
+        $datos->save();
 
-
+        return redirect()->route('NA.indexC')->with('aleatorio','ok');
     }
 }

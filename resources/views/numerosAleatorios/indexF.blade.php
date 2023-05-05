@@ -47,9 +47,18 @@
                         <button type="submit" class="btn btn-primary mt-3">Generar</button>
                     </div>
                 </form>
-                @if(isset($numeros))
+
+                @if(isset($numeros, $cantidad, $a))
                     <div class="text-center">
-                        <button type="button" class="btn btn-primary mt-3">Probar aleatoriedad</button>
+<!--                        formulario para guardar los datos generados con sus valores iniciales-->
+                        <form action="{{route('NA.storeF')}}" method="POST">
+                            @csrf
+                            <input type="hidden" name="metodo" value="fibonacci">
+                            <input type="hidden" name="cantidad" value="{{ $cantidad }}">
+                            <input type="hidden" name="control" value="{{ $a }}">
+                            <input type="hidden" name="numerosGenerados" value="{{json_encode($numeros)}}">
+                            <button type="submit" class="btn btn-primary mt-3">Guardar numeros generados</button>
+                        </form>
                     </div>
                 @endif
             </div>
@@ -106,7 +115,7 @@
 
             $('#cantidad').on('input change', function () {
                 // cambiar la clase de los inputs
-                if ($(this).val() < 10 || $(this).val() === '') {
+                if ($(this).val() < 5 || $(this).val() === '') {
                     // el padre agrege la clase has-danger
                     $(this).parent().removeClass('has-success');
                     $(this).parent().addClass('has-danger');

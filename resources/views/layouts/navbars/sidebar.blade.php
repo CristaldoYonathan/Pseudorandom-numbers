@@ -25,10 +25,27 @@
 {{--            Metodo de congruencia fundamental--}}
             <li @if ($pageSlug == 'indexC') class="active " @endif>
                 <a href="{{ route('NA.indexC') }}">
-                    <i class="tim-icons icon-app"></i>
+                    <i class="tim-icons icon-chart-bar-32"></i>
                     <p>{{ __('Congruencia') }}</p>
                 </a>
             </li>
+
+{{--            Test de aleatoriedad Chi Cuadrado--}}
+            <li @if ($pageSlug == 'indexChi') class="active " @endif>
+                <a href="{{ route('TA.indexChi') }}">
+                    <i class="tim-icons icon-atom"></i>
+                    <p>{{ __('Chi Cuadrado') }}</p>
+                </a>
+            </li>
+
+{{--            Test de aleatoriedad Poker--}}
+            <li @if ($pageSlug == 'indexPoker') class="active " @endif>
+                <a href="{{ route('TA.indexPoker') }}">
+                    <i class="tim-icons icon-atom"></i>
+                    <p>{{ __('Poker') }}</p>
+                </a>
+            </li>
+
 
 {{--            <li>--}}
 {{--                <a data-toggle="collapse" href="#laravel-examples" aria-expanded="true">--}}

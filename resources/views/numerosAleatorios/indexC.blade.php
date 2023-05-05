@@ -34,10 +34,11 @@
                     </div>
                 </div>
 
+{{--                TODO: Validar que este campo sea menor que la cantidad de numeros a generar--}}
                 <div class="form-group">
-                    <label for="semiillavik">Segunda semilla(V<sub>i-k</sub>):</label>
+                    <label for="semiillavik">Cantidad de valores anteriores generados(V<sub>i-k</sub>):</label>
                     <div class="form-group">
-                        <input type="number" class="form-control" name="semiillavik" id="semiillavik"  placeholder="1000">
+                        <input type="number" class="form-control" name="semiillavik" id="semiillavik"  placeholder="5">
                     </div>
                 </div>
 
@@ -66,9 +67,21 @@
                     <button type="submit" class="btn btn-primary">Generar</button>
                 </div>
             </form>
-            @if(isset($numeros))
+
+            @if(isset($numeros, $cantidad, $a, $c, $m,$v2))
                 <div class="text-center">
-                    <button type="button" class="btn btn-primary mt-3">Probar aleatoriedad</button>
+                    <!--formulario para guardar los datos generados con sus valores iniciales-->
+                    <form action="{{route('NA.storeC')}}" method="POST">
+                        @csrf
+                        <input type="hidden" name="metodo" value="congruencia">
+                        <input type="hidden" name="cantidad" value="{{ $cantidad }}">
+                        <input type="hidden" name="v2" value="{{ $v2 }}">
+                        <input type="hidden" name="a" value="{{ $a }}">
+                        <input type="hidden" name="c" value="{{ $c }}">
+                        <input type="hidden" name="m" value="{{ $m }}">
+                        <input type="hidden" name="numerosGenerados" value="{{json_encode($numeros)}}">
+                        <button type="submit" class="btn btn-primary mt-3">Guardar numeros generados</button>
+                    </form>
                 </div>
             @endif
         </div>
@@ -91,7 +104,7 @@
                         <tbody>
                             <tr>
                                 <td>{{$numeros[0]}}</td>
-                                <td>{{$numeros[1]}}</td>
+                                <td>{{$v2}}</td>
                                 <td>{{$a}}</td>
                                 <td>{{$c}}</td>
                                 <td>{{$m}}</td>

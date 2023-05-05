@@ -207,6 +207,32 @@
                     });
                 });
             });
+
+
+        //    Alertas
+
+            @if (session('aleatorio') == 'ok')
+                $.notify({
+                    icon: "tim-icons icon-bell-55",
+                    message: "La serie de numeros a sido guardada correctamente."
+                }, {
+                    type: 'success',
+                    timer: 8000,
+                });
+            @endif
+            @if (session('chi') == 'ok')
+                $.notify({
+                    icon: "tim-icons icon-bell-55",
+                    message: "La prueba generada a sido guardada correctamente."
+                }, {
+                    type: 'success',
+                    timer: 8000,
+                });
+            @endif
+
+
+        //    Alertas
+
         </script>
         @stack('js')
     </body>

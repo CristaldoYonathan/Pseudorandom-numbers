@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\NumerosAleatoriosController;
+use App\Http\Controllers\TestAleatoriedadController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -41,7 +42,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/indexC',[NumerosAleatoriosController::class, 'indexC'])->name('NA.indexC');
         Route::post('/fibonacci',[NumerosAleatoriosController::class, 'fibonacci'])->name('NA.fibonacci');
         Route::post('/congruencias',[NumerosAleatoriosController::class, 'congruencias'])->name('NA.congruencias');
-
+        Route::post('/fibonacciS',[NumerosAleatoriosController::class, 'storeF'])->name('NA.storeF');
+        Route::post('/congruenciasS',[NumerosAleatoriosController::class, 'storeC'])->name('NA.storeC');
+        Route::get('/indexChi',[TestAleatoriedadController::class, 'indexChi'])->name('TA.indexChi');
+        Route::get('/indexChiA',[TestAleatoriedadController::class, 'chiCuadrado'])->name('TA.Chi');
+        Route::get('/indexPoker',[TestAleatoriedadController::class, 'indexPoker'])->name('TA.indexPoker');
+        Route::get('/indexPokerA',[TestAleatoriedadController::class, 'poker'])->name('TA.Poker');
+        Route::post('/indexChiG',[TestAleatoriedadController::class, 'storeChi'])->name('TA.storeChi');
 });
 
 Route::group(['middleware' => 'auth'], function () {
