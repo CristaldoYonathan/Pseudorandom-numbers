@@ -202,6 +202,15 @@ class TestAleatoriedadController extends Controller
             }
         }
 
+      /*  $fo_general = array(
+            'todos diferentes' => 5,
+            'par' => 1,
+            'dos pares' => 3,
+            'tercia' => 3,
+            'full' => 4,
+            'quintilla' => 1
+        );*/
+
         //conseguimos la suma de la frecuencia observada general
         $sumatoria = array_sum($fo_general);
 
@@ -221,81 +230,81 @@ class TestAleatoriedadController extends Controller
             $fe[$clasificacion] = $probabilidad * $sumatoria;
         }
 
-        //agrupamos las frecuencias esperadas que sean menores a 5 en una sola clasificacion
-        $fe_agrupadas = array(
-            'todos diferentes' => 0,
-            'par' => 0,
-            'dos pares' => 0,
-            'tercia' => 0,
-            'full' => 0,
-            'quintilla' => 0
-        );
 
-        $fo_agrupadas = array(
-            'todos diferentes' => 0,
-            'par' => 0,
-            'dos pares' => 0,
-            'tercia' => 0,
-            'full' => 0,
-            'quintilla' => 0
-        );
-
-        $sum_fe_agrupadas = 0;
-        $continuar = false;
-
+        //separamos las fe con valor menor a 5 y valor mayor a 5 en 2 array diferentes
+        $fe_menor_5 = array();
+        $fe_mayor_5 = array();
+        $sumas_mayor_5 = array();
         foreach ($fe as $clasificacion => $frecuencia) {
             if ($frecuencia < 5) {
-                $fe_agrupadas['todos diferentes'] += $frecuencia;
-                $fo_agrupadas['todos diferentes'] += $fo_general[$clasificacion];
-                $sum_fe_agrupadas += $frecuencia;
-                if ($sum_fe_agrupadas >= 5){
-                    $continuar = true;
-                }
-            }else{
-                $fe_agrupadas[$clasificacion] = $frecuencia;
-                $fo_agrupadas[$clasificacion] = $fo_general[$clasificacion];
-            }
-
-            if ($continuar) {
-                break;
+                $fe_menor_5[$clasificacion] = $frecuencia;
+            } else {
+                $fe_mayor_5[$clasificacion] = $frecuencia;
             }
         }
 
-        dd($fe_agrupadas, $fo_agrupadas);
+    /*    $fe_menor_5 = array(
+            'todos diferentes' => 2.4192,
+            'par' => 4.032,
+            'dos pares' => 0.864,
+            'tercia' => 0.576,
+            'full' => 0.072,
+            'quintilla' => 0.0008
+        );*/
 
-        //despejamos los valores de frecuencia esperada que sean distintos de 0
-        $fe_final = array();
-
-        foreach ($fe_agrupadas as $clasificacion => $frecuencia) {
-            if ($frecuencia > 0) {
-                $fe_final[$clasificacion] = $frecuencia;
-            }
-        }
-
-        //despejamos los valores de frecuencia observada que sean distintos de 0
+        //recorremos el array de fe menores a 5 y sumamos los valores de las probabilidades hasta dar 5,
+        // si llega a 5 deternse y no seguir sumando. Sin usar funciones externas
+        $fe_menor_5 = array_reverse($fe_menor_5);
+/*        $fo_general = array_reverse($fo_general);*/
+        $suma = 0;
+        $suma_fo = 0;
+        $posicion = 0;
+        $ultima_clasificacion = array();
         $fo_final = array();
-
-        foreach ($fo_agrupadas as $clasificacion => $frecuencia) {
-            if ($frecuencia > 0) {
-                $fo_final[$clasificacion] = $frecuencia;
+        foreach ($fe_menor_5 as $clasificacion => $frecuencia) {
+            $suma_temporal = $suma + $frecuencia;
+            $suma = $suma_temporal;
+            $suma_fo += $fo_general[$clasificacion];
+            if ($suma >= 5) {
+                $sumas_mayor_5[$posicion] = $suma; // Agregar la suma mayor a 5 al array
+                $ultima_clasificacion[] = $clasificacion; // Guardar la última clasificación que llegó a una suma mayor o igual a 5
+/*                $fo_final[$posicion] = $suma_fo; // Guardar la suma de las frecuencias observadas de la última clasificación*/
+            }elseif ($suma_temporal < 5) {
+                $sumas_mayor_5[$posicion] = $suma; // Agregar la suma menor a 5 al array
+                /*$fo_final[$posicion] = $suma_fo;*/ // Guardar la suma de las frecuencias observadas de la última clasificación
             }
+            if ($suma_temporal >= 5) {
+                $suma = 0;
+                $posicion++;
+            }
+
         }
+        if(min($sumas_mayor_5) < 5){
+            $ultima_clasificacion[] = 'todos diferentes';
+        }
+
+        $sumas_mayor_5 = array_reverse($sumas_mayor_5);
+        $ultima_clasificacion = array_reverse($ultima_clasificacion);
+/*        $fo_final = array_reverse($fo_final);*/
+
+        $fe_final = array_combine($ultima_clasificacion,$sumas_mayor_5);
+/*        $fo_final = array_combine($ultima_clasificacion,$fo_final);*/
 
         //calculamos el valor de chi cuadrada
         $chi_cuadrada = 0;
 
-        foreach ($fe_final as $clasificacion => $frecuencia) {
+        /*foreach ($fe_final as $clasificacion => $frecuencia) {
             $chi_cuadrada += pow($fo_final[$clasificacion] - $frecuencia, 2) / $frecuencia;
-        }
+        }*/
+
+
+        dd($fe_menor_5,$fe_mayor_5,$fe,$suma,$sumas_mayor_5,$ultima_clasificacion,$fe_final,$fo_general,$fo_final);
+
 
         //calculamos el valor de chi cuadrada tabulado
 
-
-
-        /*$resultado = $this->clasificarPoker($serie);*/
-
         dd($serie,$numeros_de_1_digito,$clasificaciones1digito, $numeros_de_2_digitos,$clasificaciones2digitos,
-            $numeros_de_3_digitos,$clasificaciones3digitos, $numeros_de_4_digitos,$clasificaciones4digitos, $numeros_de_5_digitos,$clasificaciones5digitos,$fo_general,$sumatoria,$fe,$fe_agrupadas,$fe_final,$fo_agrupadas,$fo_final,$chi_cuadrada);
+            $numeros_de_3_digitos,$clasificaciones3digitos, $numeros_de_4_digitos,$clasificaciones4digitos, $numeros_de_5_digitos,$clasificaciones5digitos,$fo_general,$sumatoria,$fe,$chi_cuadrada);
     }
 
     public function clasificacionPoker($numero, $clasificacion){
