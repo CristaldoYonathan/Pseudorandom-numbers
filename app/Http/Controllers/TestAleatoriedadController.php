@@ -111,15 +111,15 @@ class TestAleatoriedadController extends Controller
 
         foreach ($serie as $numero) {
             $longitud = strlen((string) $numero); // Convierte el número a string y calcula su longitud
-            if ($longitud == 1) { // Solo contamos números con 1, 2, 3, 4 o 5 dígitos
+            if ($longitud == 1) { // Solo contamos números con 1 dígito
                 $numeros_de_1_digito[] = $numero;
-            }else if ($longitud == 2) { // Solo contamos números con 1, 2, 3, 4 o 5 dígitos
+            }else if ($longitud == 2) { // Solo contamos números con 2 dígitos
                 $numeros_de_2_digitos[] = $numero;
-            }else if ($longitud == 3) { // Solo contamos números con 1, 2, 3, 4 o 5 dígitos
+            }else if ($longitud == 3) { // Solo contamos números con 3 dígitos
                 $numeros_de_3_digitos[] = $numero;
-            }else if ($longitud == 4) { // Solo contamos números con 1, 2, 3, 4 o 5 dígitos
+            }else if ($longitud == 4) { // Solo contamos números con 4 dígitos
                 $numeros_de_4_digitos[] = $numero;
-            }else if ($longitud == 5) { // Solo contamos números con 1, 2, 3, 4 o 5 dígitos
+            }else if ($longitud == 5) { // Solo contamos números con 5 dígitos
                 $numeros_de_5_digitos[] = $numero;
             }
         }
@@ -146,7 +146,6 @@ class TestAleatoriedadController extends Controller
             'par' => 0,
             'dos pares' => 0,
             'tercia' => 0,
-            'full' => 0,
         );
 
         $clasificaciones5digitos = array(
@@ -159,23 +158,23 @@ class TestAleatoriedadController extends Controller
         );
 
        foreach ($numeros_de_1_digito as $numero) {
-            $clasificaciones1digito = $this->clasificacionPoker($numero, $clasificaciones1digito);
+            $this->clasificacionPoker($numero, $clasificaciones1digito);
         }
 
         foreach ($numeros_de_2_digitos as $numero) {
-            $clasificaciones2digitos = $this->clasificacionPoker($numero, $clasificaciones2digitos);
+            $this->clasificacionPoker($numero, $clasificaciones2digitos);
         }
 
         foreach ($numeros_de_3_digitos as $numero) {
-            $clasificaciones3digitos = $this->clasificacionPoker($numero, $clasificaciones3digitos);
+            $this->clasificacionPoker($numero, $clasificaciones3digitos);
         }
 
         foreach ($numeros_de_4_digitos as $numero) {
-            $clasificaciones4digitos = $this->clasificacionPoker($numero, $clasificaciones4digitos);
+            $this->clasificacionPoker($numero, $clasificaciones4digitos);
         }
 
         foreach ($numeros_de_5_digitos as $numero) {
-            $clasificaciones5digitos = $this->clasificacionPoker($numero, $clasificaciones5digitos);
+            $this->clasificacionPoker($numero, $clasificaciones5digitos);
         }
 
         //sumar los valores de los array con sus etiquetas correspondientes
@@ -202,14 +201,14 @@ class TestAleatoriedadController extends Controller
             }
         }
 
-      /*  $fo_general = array(
-            'todos diferentes' => 5,
-            'par' => 1,
-            'dos pares' => 3,
-            'tercia' => 3,
-            'full' => 4,
-            'quintilla' => 1
-        );*/
+        /*  $fo_general = array(
+              'todos diferentes' => 5,
+              'par' => 1,
+              'dos pares' => 3,
+              'tercia' => 3,
+              'full' => 4,
+              'quintilla' => 1
+          );*/
 
         //conseguimos la suma de la frecuencia observada general
         $sumatoria = array_sum($fo_general);
@@ -229,6 +228,8 @@ class TestAleatoriedadController extends Controller
         foreach ($probabilidadesOcurrencia as $clasificacion => $probabilidad) {
             $fe[$clasificacion] = $probabilidad * $sumatoria;
         }
+
+        dd($clasificaciones1digito, $clasificaciones2digitos, $clasificaciones3digitos, $clasificaciones4digitos, $clasificaciones5digitos, $clasificaciones, $fo_general, $sumatoria, $fe);
 
 
         //separamos las fe con valor menor a 5 y valor mayor a 5 en 2 array diferentes
@@ -307,119 +308,79 @@ class TestAleatoriedadController extends Controller
             $numeros_de_3_digitos,$clasificaciones3digitos, $numeros_de_4_digitos,$clasificaciones4digitos, $numeros_de_5_digitos,$clasificaciones5digitos,$fo_general,$sumatoria,$fe,$chi_cuadrada);
     }
 
-    public function clasificacionPoker($numero, $clasificacion){
+    public function clasificacionPoker($numero, &$clasificacionActual) {
 
-        $numerosIndividuales = [];
-        $ntd = [];
-        $npar = [];
-        $nter = [];
-        $ndospar = [];
-        $nfull = [];
-        $nquintilla = [];
+        //idea general
+        /*Ir cambiando las cantidades de cifras e ir buscando las clasificaciones por cifra
+        asi vas poniendo especificamente en cada seccion el condicional necesario
+        DEBERIA FUNCIONAR
 
-        $fo = array_fill(0, 10, 0); // Inicializar con 0 en todas las claves del 0 al 9
+        EJEMPLO
 
-        $cadena = strval($numero);
-        foreach (str_split($cadena) as $digito) {
-            $valor = intval($digito);
-            $numerosIndividuales[] = $valor;
-            $fo[$valor]++;
-        }
+        $numero = 1134;
 
-        //clasificar la cantidad que aparece en fo con los valores del array $clasificaciones
-        foreach ($fo as $frecuencia) {
-            if ($frecuencia == 5) {
-                $clasificacion['quintilla']++;
-                $nquintilla[] = $numero;
-            } elseif ($frecuencia == 3) {
-                $clasificacion['tercia']++;
-                $nter[] = $numero;
+        entonces miras con el dd que sale en $valores y count($valores)
+
+        y fijas donde caerian ocurrencias de ese tipo y vas a comprobar en los ifs entonces
+        cuando encuentres si no hay establces condicional hasta cubrir todos los casos
+
+        AYUDA ME MUERO SON LAS 1:51 A MIMIR XD
+
+        */
+
+/*        $numero = 11121;*/
+
+        $digitos = str_split($numero);
+        $conteo = array_count_values($digitos);
+        $valores = array_values($conteo);
+        rsort($valores);
+
+/*        dd($digitos,$conteo,$valores,count($valores));*/
+
+        if (count($valores) == 5) {
+            if ($valores[0] == 1 && $valores[1] == 1 && $valores[2] == 1 && $valores[3] == 1 && $valores[4] == 1){
+                $clasificacionActual['todos diferentes']++;
             }
-            /*elseif ($frecuencia == 1 && count(array_unique($numerosIndividuales)) == 4) {
-                $clasificacion['todos diferentes']++;
-                $ntd[] = $numero;
-            }*/
+        } elseif (count($valores) == 4) {
+            if ($valores[0] == 1 && $valores[1] == 1 && $valores[2] == 1 && $valores[3] == 1) {
+                $clasificacionActual['todos diferentes']++;
+            }elseif ($valores[0] == 2 && $valores[1] == 1 && $valores[2] == 1 && $valores[3] == 1) {
+                $clasificacionActual['par']++;
+            }
+        } elseif (count($valores) == 3) {
+            if($valores[0] == 1 && $valores[1] == 1 && $valores[2] == 1){
+                $clasificacionActual['todos diferentes']++;
+            }elseif ($valores[0] == 2 && $valores[1] == 1 && $valores[2] == 1){
+                $clasificacionActual['par']++;
+            }elseif ($valores[0] == 2 && $valores[1] == 2 && $valores[2] == 1){
+                $clasificacionActual['dos pares']++;
+            }elseif ($valores[0] == 3 && $valores[1] == 1 && $valores[2] == 1){
+                $clasificacionActual['tercia']++;
+            }
+        } elseif (count($valores) == 2) {
+            if($valores[0] == 1 && $valores[1] == 1){
+                $clasificacionActual['todos diferentes']++;
+            }elseif ($valores[0] == 2 && $valores[1] == 2) {
+                $clasificacionActual['dos pares']++;
+            }elseif($valores[0] == 2 && $valores[1] == 1){
+                $clasificacionActual['par']++;
+            }elseif($valores[0] == 3 && $valores[1] == 1){
+                $clasificacionActual['tercia']++;
+            }elseif($valores[0] == 3 && $valores[1] == 2){
+                $clasificacionActual['full']++;
+            }
+        } elseif(count($valores) == 1) {
+            if ($valores[0] == 2) {
+                $clasificacionActual['par']++;
+            }elseif($valores[0] == 3){
+                $clasificacionActual['tercia']++;
+            }elseif($valores[0] == 5){
+                $clasificacionActual['quintilla']++;
+            }else {
+                $clasificacionActual['todos diferentes']++;
+            }
         }
-
-        if (in_array(4, $fo)) {
-            $clasificacion['full']++;
-            $nfull[] = $numero;
-        } elseif (in_array(2, $fo) && count(array_keys($fo, 2)) == 2) {
-            $clasificacion['dos pares']++;
-            $ndospar[] = $numero;
-        }elseif (in_array(2, $fo) && count(array_keys($fo, 2)) == 1) {
-            $clasificacion['par']++;
-            $npar[] = $numero;
-        }
-
-        foreach ($ntd as $numero) {
-           echo $numero." todos diferentes <br>";
-        }
-        foreach ($npar as $numero) {
-           echo $numero." par <br>";
-        }
-        foreach ($ndospar as $numero) {
-           echo $numero." dos pares <br>";
-        }
-        foreach ($nter as $numero) {
-           echo $numero." tercia <br>";
-        }
-        foreach ($nfull as $numero) {
-           echo $numero." full <br>";
-        }
-        foreach ($nquintilla as $numero) {
-           echo $numero." quintilla <br>";
-        }
-
-        return $clasificacion;
-
     }
-
-    /*function clasificarPoker($numeros) {
-
-        $clasificaciones = array(
-            "TD" => array(),
-            "1P" => array(),
-            "2P" => array(),
-            "T" => array(),
-            "F" => array(),
-            "Q" => array()
-        );
-
-        foreach ($numeros as $numero) {
-            // Eliminar los espacios en blanco y cualquier otro carácter no numérico
-            $numero = preg_replace("/[^0-9.]/", "", $numero);
-
-            // Extraer los dígitos individuales del número y contarlos
-            $digits = str_split($numero);
-            $count = array_count_values($digits);
-
-            // Clasificar la mano de poker
-            if (count($count) == count($digits)) {
-                array_push($clasificaciones["TD"], $numero);
-            } elseif (count($count) == 4) {
-                array_push($clasificaciones["1P"], $numero);
-            } elseif (count($count) == 3) {
-                if (in_array(3, $count)) {
-                    array_push($clasificaciones["T"], $numero);
-                } else {
-                    array_push($clasificaciones["2P"], $numero);
-                }
-            } elseif (count($count) == 2) {
-                if (in_array(4, $count)) {
-                    array_push($clasificaciones["F"], $numero);
-                } else {
-                    array_push($clasificaciones["1P"], $numero);
-                    array_push($clasificaciones["T"], $numero);
-                }
-            } elseif (count($count) == 1) {
-                array_push($clasificaciones["Q"], $numero);
-            }
-        }
-
-        return $clasificaciones;
-    }*/
-
 
     public function storeChi(Request $request)
     {
