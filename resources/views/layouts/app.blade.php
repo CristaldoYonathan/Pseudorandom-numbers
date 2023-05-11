@@ -229,6 +229,15 @@
                     timer: 8000,
                 });
             @endif
+            @if (session('poker') == 'ok')
+                $.notify({
+                    icon: "tim-icons icon-bell-55",
+                    message: "La prueba generada a sido guardada correctamente."
+                }, {
+                    type: 'success',
+                    timer: 8000,
+                });
+            @endif
 
 
         //    Alertas

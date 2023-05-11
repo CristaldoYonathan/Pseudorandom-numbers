@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property User|null $user
  * @property Collection|Resultadochi[] $resultadochis
+ * @property Collection|Resultadopoker[] $resultadopokers
  *
  * @package App\Models
  */
@@ -47,5 +48,10 @@ class Numerosfibonacci extends Model
 	public function resultadochis()
 	{
 		return $this->hasMany(Resultadochi::class, 'id_f');
+	}
+
+	public function resultadopokers()
+	{
+		return $this->hasMany(Resultadopoker::class, 'id_f');
 	}
 }

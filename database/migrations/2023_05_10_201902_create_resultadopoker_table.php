@@ -11,22 +11,25 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('resultadochi', function (Blueprint $table) {
+        Schema::create('resultadopoker', function (Blueprint $table) {
+
             $table->id();
             $table->string('metodo');
             $table->longText('fo');
-            $table->float('fe');
+            $table->longText('fe');
             $table->float('chi_cuadrado_calculado');
+            $table->float('chi_cuadrado_limite');
+            $table->integer('grados_de_libertad');
             $table->boolean('resultado');
             $table->timestamps();
+
         });
 
         //relacion con la tabla numeros fibonacci
-        Schema::table('resultadochi', function (Blueprint $table) {
+        Schema::table('resultadopoker', function (Blueprint $table) {
             $table->foreignId('id_f')->nullable()->constrained('numerosfibonacci');
             $table->foreignId('id_c')->nullable()->constrained('numeroscongruencia');
         });
-
     }
 
     /**
@@ -34,6 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('resultadochi');
+        Schema::dropIfExists('resultadopoker');
     }
 };

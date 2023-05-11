@@ -42,13 +42,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-	public function numeroscongruencia()
-	{
-		return $this->hasMany(Numeroscongruencium::class);
-	}
+    public function numeroscongruencia()
+    {
+        return $this->hasMany(Numeroscongruencium::class);
+    }
 
-	public function numerosfibonaccis()
-	{
-		return $this->hasMany(Numerosfibonacci::class);
-	}
+    public function numerosfibonaccis()
+    {
+        return $this->hasMany(Numerosfibonacci::class);
+    }
 }

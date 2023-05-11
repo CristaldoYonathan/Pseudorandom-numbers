@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\NumerosCongruencia;
 use App\Models\NumerosFibonacci;
 use App\Models\Resultadochi;
+use App\Models\Resultadopoker;
 use Illuminate\Http\Request;
 
 class TestAleatoriedadController extends Controller
@@ -79,7 +80,6 @@ class TestAleatoriedadController extends Controller
     public function poker(Request $request){
 
         $id_serie = $request->input('serie');
-        $significancia = 0.05;
         if ($request->input('metodo') == 'fibonacci'){
             $valoresObtenidos = NumerosFibonacci::get()->where('user_id', auth()->user()->id)->where('id', $request->input('serie'))->first();
             $serie = json_decode($valoresObtenidos->valoresGeneradosF);
@@ -221,25 +221,11 @@ class TestAleatoriedadController extends Controller
         }
 
         //calculamos el valor de chi cuadrada
-        $chi_cuadrada = 0;
+        $chi_cuadrado_calculado = 0;
 
         foreach ($fe as $clasificacion => $frecuencia) {
-            $chi_cuadrada += pow($fo[$clasificacion] - $frecuencia, 2) / $frecuencia;
+            $chi_cuadrado_calculado += pow($fo[$clasificacion] - $frecuencia, 2) / $frecuencia;
         }
-
-        dd($numeros_de_1_digito,
-            $numeros_de_2_digitos,
-            $numeros_de_3_digitos,
-            $numeros_de_4_digitos,
-            $numeros_de_5_digitos,
-            "-------------------",
-            $clasificaciones1digito,
-            $clasificaciones2digitos,
-            $clasificaciones3digitos,
-            $clasificaciones4digitos,
-            $clasificaciones5digitos,
-            "-------------------",
-            $fo,$fe, $chi_cuadrada);
 
         //calculamos el valor de chi cuadrada tabulado
         /*
@@ -252,7 +238,41 @@ class TestAleatoriedadController extends Controller
             6 - 12,5916
         */
 
-        dd("fin");
+        $significancia = 0.05;
+        $grados_de_libertad = count($fe) - 1;
+
+        switch ($grados_de_libertad) {
+            case 1:
+                $chi_cuadrado_limite = 3.8415;
+                break;
+            case 2:
+                $chi_cuadrado_limite = 5.9915;
+                break;
+            case 3:
+                $chi_cuadrado_limite = 7.8147;
+                break;
+            case 4:
+                $chi_cuadrado_limite = 9.4877;
+                break;
+            case 5:
+                $chi_cuadrado_limite = 11.0705;
+                break;
+            case 6:
+                $chi_cuadrado_limite = 12.5916;
+                break;
+            default:
+                $chi_cuadrado_limite = 0;
+                break;
+        }
+
+        //verificar cual es mayor si el chi cuadrado calculado o el chi cuadrado limite
+        if ($chi_cuadrado_calculado > $chi_cuadrado_limite) {
+            $resultado = false;
+        } else {
+            $resultado = true;
+        }
+
+        return view('testAleatoriedad.indexPoker', compact('fo','fe','chi_cuadrado_calculado','chi_cuadrado_limite','resultado','significancia','serie','iniciales','metodo','id_serie','grados_de_libertad'));
     }
 
     public function clasificacionPoker($numero, &$clasificacionActual) {
@@ -355,5 +375,34 @@ class TestAleatoriedadController extends Controller
         $chi->save();
 
         return redirect()->route('TA.indexChi')->with('chi','ok');
+    }
+    public function storePoker(Request $request)
+    {
+
+/*        dd($request->all());*/
+
+        $poker = new Resultadopoker();
+        $poker->metodo = $request->input('metodo');
+        $poker->fo = $request->input('fo');
+        $poker->fe = $request->input('fe');
+        $poker->chi_cuadrado_calculado = $request->input('chi_cuadrado_calculado');
+        $poker->chi_cuadrado_limite = $request->input('chi_cuadrado_limite');
+        $poker->grados_de_libertad = $request->input('grados_libertad');
+        if ($request->input('resultado') !== null) {
+            $poker->resultado = true;
+        } else {
+            $poker->resultado = false;
+        }
+        if ($request->input('metodo') == 'fibonacci') {
+            $poker->id_f = $request->input('id_serie');
+            $poker->id_c = null;
+        } else if ($request->input('metodo') == 'congruencias'){
+            $poker->id_c = $request->input('id_serie');
+            $poker->id_f = null;
+        }
+
+        $poker->save();
+
+        return redirect()->route('TA.indexPoker')->with('poker','ok');
     }
 }

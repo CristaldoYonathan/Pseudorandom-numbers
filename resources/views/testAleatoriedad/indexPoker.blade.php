@@ -56,16 +56,18 @@
                 <div class="row">
                     <div class="col-6">
                         <div class="text-center">
-                            <a href="{{route('TA.indexChi')}}" class="btn btn-primary mt-3">Probar otra serie</a>
+                            <a href="{{route('TA.indexPoker')}}" class="btn btn-primary mt-3">Probar otra serie</a>
                         </div>
                     </div>
                     <div class="col-6">
 {{--                        form de tipo post para enviar estos datos $fo,$fe,$chi_cuadrado_calculado,$resultado,$metodo,$id_serie a la ruta TA.storeChi--}}
-                        <form action="{{route('TA.storeChi')}}" method="POST">
+                        <form action="{{route('TA.storePoker')}}" method="POST">
                             @csrf
                             <input type="hidden" name="fo" value="{{json_encode($fo)}}">
-                            <input type="hidden" name="fe" value="{{$fe}}">
+                            <input type="hidden" name="fe" value="{{json_encode($fe)}}">
                             <input type="hidden" name="chi_cuadrado_calculado" value="{{$chi_cuadrado_calculado}}">
+                            <input type="hidden" name="chi_cuadrado_limite" value="{{$chi_cuadrado_limite}}">
+                            <input type="hidden" name="grados_libertad" value="{{$grados_de_libertad}}">
                             <input type="hidden" name="resultado" value="{{$resultado}}">
                             <input type="hidden" name="metodo" value="{{$metodo}}">
                             <input type="hidden" name="id_serie" value="{{$id_serie}}">
@@ -111,7 +113,7 @@
                                     <tbody>
                                     <tr>
                                         <td>{{$significancia}}</td>
-                                        <td>9</td>
+                                        <td>{{$grados_de_libertad}}</td>
                                         <td>{{ $chi_cuadrado_calculado }}</td>
                                         <td>{{ $chi_cuadrado_limite }}</td>
                                         <td>

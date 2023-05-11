@@ -49,6 +49,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/indexPoker',[TestAleatoriedadController::class, 'indexPoker'])->name('TA.indexPoker');
         Route::get('/indexPokerA',[TestAleatoriedadController::class, 'poker'])->name('TA.Poker');
         Route::post('/indexChiG',[TestAleatoriedadController::class, 'storeChi'])->name('TA.storeChi');
+        Route::post('/indexPokerG',[TestAleatoriedadController::class, 'storePoker'])->name('TA.storePoker');
 });
 
 Route::group(['middleware' => 'auth'], function () {
