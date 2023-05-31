@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MarcaClaseController;
 use App\Http\Controllers\NumerosAleatoriosController;
 use App\Http\Controllers\TestAleatoriedadController;
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +31,7 @@ Auth::routes();
 
 Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home')->middleware('auth');
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['auth']], function () {
 		Route::get('icons', ['as' => 'pages.icons', 'uses' => 'App\Http\Controllers\PageController@icons']);
 		Route::get('maps', ['as' => 'pages.maps', 'uses' => 'App\Http\Controllers\PageController@maps']);
 		Route::get('notifications', ['as' => 'pages.notifications', 'uses' => 'App\Http\Controllers\PageController@notifications']);
@@ -50,10 +51,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/indexPokerA',[TestAleatoriedadController::class, 'poker'])->name('TA.Poker');
         Route::post('/indexChiG',[TestAleatoriedadController::class, 'storeChi'])->name('TA.storeChi');
         Route::post('/indexPokerG',[TestAleatoriedadController::class, 'storePoker'])->name('TA.storePoker');
+        Route::get('/indexClases',[MarcaClaseController::class, 'indexClases'])->name('MC.indexClases');
+        Route::get('/indexClasesA',[MarcaClaseController::class, 'marcaclases'])->name('MC.MarcaClases');
 });
 
 Route::group(['middleware' => 'auth'], function () {
-	Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);
+	Route::resource('user', 'App\Httphttps://www.youtube.com/watch?v=xd8dKY6Ozrg&ab_channel=HacksmithIndustriesrController', ['except' => ['show']]);
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'App\Http\Controllers\ProfileController@edit']);
 	Route::put('profile', ['as' => 'profile.update', 'uses' => 'App\Http\Controllers\ProfileController@update']);
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'App\Http\Controllers\ProfileController@password']);

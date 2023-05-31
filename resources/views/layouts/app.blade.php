@@ -21,6 +21,8 @@
         <link href="{{ asset('white') }}/css/theme.css" rel="stylesheet" />
         <!-- Alert -->
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <!--Chart-->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body class="white-content {{ $class ?? '' }}">
         @auth()
@@ -237,6 +239,15 @@
                     type: 'success',
                     timer: 8000,
                 });
+            @endif
+            @if (session('clases') == 'no')
+            $.notify({
+                icon: "tim-icons icon-bell-55",
+                message: "Debe tener almenos una serie de numeros que pase el Test de Chi Cuadrado para continuar."
+            }, {
+                type: 'danger',
+                timer: 8000,
+            });
             @endif
 
 
