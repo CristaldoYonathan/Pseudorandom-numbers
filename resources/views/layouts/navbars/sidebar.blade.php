@@ -46,6 +46,14 @@
                 </a>
             </li>
 
+{{--            Marca de clase--}}
+            <li @if ($pageSlug == 'indexClases') class="active " @endif>
+                <a href="{{ route('MC.indexClases') }}">
+                    <i class="tim-icons icon-tag"></i>
+                    <p>{{ __('Marca de clase') }}</p>
+                </a>
+            </li>
+
 
 {{--            <li>--}}
 {{--                <a data-toggle="collapse" href="#laravel-examples" aria-expanded="true">--}}
