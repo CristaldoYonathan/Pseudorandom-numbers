@@ -14,13 +14,11 @@ class MarcaClaseController extends Controller
     {
 
         //recuperar las series con resultado 1 de la tabla resultadochi con eloquent
-        $series = Resultadochi::select('id_f', 'id_c')
-            ->where('resultado', 1)
-            ->get();
+        $series = Resultadochi::get();
 
-        foreach ($series as $serie) {
-            $seriesF = Numerosfibonacci::get()->where('id', '=', $serie->id_f);
-            $seriesC = NumerosCongruencia::get()->where('id', '=', $serie->id_c);
+        foreach ($series as $serie) { //Arreglar error
+            $seriesF = Numerosfibonacci::all();
+            $seriesC = NumerosCongruencia::all();
         }
 
         if (isset($seriesF) && isset($seriesC)) {

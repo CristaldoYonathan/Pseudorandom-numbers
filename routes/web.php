@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\MarcaClaseController;
 use App\Http\Controllers\NumerosAleatoriosController;
+use App\Http\Controllers\SimulacionController;
 use App\Http\Controllers\TestAleatoriedadController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -53,6 +54,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/indexPokerG',[TestAleatoriedadController::class, 'storePoker'])->name('TA.storePoker');
         Route::get('/indexClases',[MarcaClaseController::class, 'indexClases'])->name('MC.indexClases');
         Route::get('/indexClasesA',[MarcaClaseController::class, 'marcaclases'])->name('MC.MarcaClases');
+        Route::get('/indexSimulacion',[SimulacionController::class, 'indexSimulacion'])->name('S.indexSimulacion');
+        Route::get('/indexSimulacionA',[SimulacionController::class, 'simulacion'])->name('S.Simulacion');
 });
 
 Route::group(['middleware' => 'auth'], function () {

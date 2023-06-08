@@ -54,6 +54,14 @@
                 </a>
             </li>
 
+{{--            Simulacion--}}
+            <li @if ($pageSlug == 'indexSimulacion') class="active " @endif>
+                <a href="{{ route('S.indexSimulacion') }}">
+                    <i class="tim-icons icon-molecule-40"></i>
+                    <p>{{ __('Simulacion') }}</p>
+                </a>
+            </li>
+
 
 {{--            <li>--}}
 {{--                <a data-toggle="collapse" href="#laravel-examples" aria-expanded="true">--}}
