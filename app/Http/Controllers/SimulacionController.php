@@ -20,19 +20,28 @@ class SimulacionController extends Controller{
 
     public function simulacion(Request $request){
 
-        if ($request->input('metodo') == 'congruencia') {
+        if ($request->input('metodo') == 'congruencias') {
             $series = json_decode(NumerosCongruencia::get()->where('id', $request->input('serie'))->first()->valoresGeneradosC);
         } elseif ($request->input('metodo') == 'fibonacci') {
             $series = json_decode(Numerosfibonacci::get()->where('id', $request->input('serie'))->first()->valoresGeneradosF);
         }
 
+
+
         if (isset($series)){
             $maxValue = max($series);
 
-            $normalizedArray = array_map(function($value) use ($maxValue) {
-                return $value / $maxValue;
+            $cantidadDigitos = strlen((string)$maxValue);
+
+            //agregar ceros a la derecha del 1
+            $divisor = (pow(10, +$cantidadDigitos));
+
+            $normalizedArray = array_map(function($value) use ($divisor) { //Arreglar error
+                return $value / $divisor;
             }, $series);
         }
+
+        /*dd($series, $normalizedArray, $maxValue);*/
 
 /*        dd($normalizedArray);*/
 
@@ -60,24 +69,48 @@ class SimulacionController extends Controller{
 
         //Valor inicial del caudal de agua
         $caudal = 20000;
+        $caudalInicial = $caudal;
         $caudales = [];
+        $caudalesSinDesborde = [];
+        $energiaGenerada = [];
+        $energiaPerdida = [];
 
-        //obtener las frecuencias observadas de cada clase que esté en el limite inferior y superior tneiendo en cuenta el array $normalizedArray
-        $frecuencia_observada = [];
-        //realizamos la suma y resta al caudal inicial teniedo en cuenta el array $normalizedArray y las marcas de clase
-        for ($i = 0; $i < 6; $i++) {
-            $frecuencia_observada[$i] = 0;
-            foreach ($normalizedArray as $value) {
-                if ($value >= $limite_inferior[$i] && $value <= $limite_superior[$i]) {
-                    $frecuencia_observada[$i]++;
-                    $caudal += $marcas_clases[$i];
-                    $caudales[] = $caudal;
-                }
+        foreach ($normalizedArray as $value) {
+            if ($value >= $limite_inferior[0] && $value <= $limite_superior[0]) {
+                $caudal += $marcas_clases[0];
+            }elseif ($value >= $limite_inferior[1] && $value <= $limite_superior[1]) {
+                $caudal += $marcas_clases[1];
+            }elseif ($value >= $limite_inferior[2] && $value <= $limite_superior[2]) {
+                $caudal += $marcas_clases[2];
+            }elseif ($value >= $limite_inferior[3] && $value <= $limite_superior[3]) {
+                $caudal += $marcas_clases[3];
+            }elseif ($value >= $limite_inferior[4] && $value <= $limite_superior[4]) {
+                $caudal += $marcas_clases[4];
+            }elseif ($value >= $limite_inferior[5] && $value <= $limite_superior[5]) {
+                $caudal += $marcas_clases[5];
             }
-        }
-        if (isset($normalizedArray)){
-            $frecuencia_observada[5]++;
-            $caudal += $marcas_clases[5];
+
+            $caudalesSinDesborde[] = $caudal;
+            if ($caudal >= 15000 && $caudal < 25000) {
+                $caudal -= 3000;
+                $energiaGenerada[] = 3200 ;
+                $energiaPerdida[] = 9600;
+            } elseif ($caudal >= 25000 && $caudal < 32000) {
+                $caudal -= 6000;
+                $energiaGenerada[] = 6400;
+                $energiaPerdida[] = 6400;
+            } elseif ($caudal >= 32000 && $caudal < 40000) {
+                $caudal -= 9000;
+                $energiaGenerada[] = 9600;
+                $energiaPerdida[] = 3200;
+            } elseif ($caudal >= 40000) {
+                $caudal -= 12000;
+                $energiaGenerada[] = 12800;
+                $energiaPerdida[] = 0;
+            }else{
+                $energiaGenerada[] = 0;
+                $energiaPerdida[] = 12800;
+            }
             $caudales[] = $caudal;
         }
 
@@ -114,7 +147,7 @@ class SimulacionController extends Controller{
         $infocaudal['minimo'] = $caudal_minimo;
 
         // Conteo de aperturas de las compuertas y activaciones de alerta roja
-        foreach ($caudales as $caudal) {
+        foreach ($caudalesSinDesborde as $caudal) {
             if ($caudal >= 15000 && $caudal < 25000) {
                 $infocompuertas['primera']++;
             } elseif ($caudal >= 25000 && $caudal < 32000) {
@@ -130,14 +163,13 @@ class SimulacionController extends Controller{
                 $infocompuertas['tercera']++;
                 $infocompuertas['cuarta']++;
             }
-
             if ($caudal > 45000) {
                 $infoalerta['activacion']++;
             }
         }
 
 
-        return view('simulacion.simulacionRepresa', compact('normalizedArray','marcas_clases','limite_inferior','limite_superior','frecuencia_observada','caudal','caudales','infocaudal','infocompuertas','infoalerta'));
+        return view('simulacion.simulacionRepresa', compact('normalizedArray','marcas_clases','limite_inferior','limite_superior','caudal','caudales','infocaudal','infocompuertas','infoalerta','caudalesSinDesborde','energiaGenerada','energiaPerdida','caudalInicial'));
 
     }
 

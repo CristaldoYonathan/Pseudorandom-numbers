@@ -58,6 +58,7 @@
                     <div class="col-12">
                         <p class="text-center">En el año se obtuvieron los siguientes datos:</p>
                         <ul class="list-group">
+                            <li class="list-group-item list-group-item-light">El <b>caudal inicial</b> fue de {{$caudalInicial}} m<sup>3</sup>/s</li>
                             <li class="list-group-item list-group-item-light">El <b>caudal promedio</b> fue de {{$infocaudal['promedio']}} m<sup>3</sup>/s</li>
                             <li class="list-group-item list-group-item-light">El <b>caudal máximo</b> fue de {{$infocaudal['maximo']}} m<sup>3</sup>/s</li>
                             <li class="list-group-item list-group-item-light">El <b>caudal mínimo</b> fue de {{$infocaudal['minimo']}} m<sup>3</sup>/s</li>
@@ -84,8 +85,12 @@
                         <thead>
                         <tr>
                             <th scope="col">Dia</th>
-                            <th scope="col">Caudal</th>
+                            <th scope="col">Valor generado</th>
+                            <th scope="col">Caudal sin desborde <b>(m<sup>3</sup>/s)</b></th>
+                            <th scope="col">Caudal <b>(m<sup>3</sup>/s)</b></th>
                             <th scope="col">Compuertas abiertas</th>
+                            <th scope="col">Energía generada <b>(Mw)</b></th>
+                            <th scope="col">Energía perdida <b>(Mw)</b></th>
                             <th scope="col">Activación de alerta</th>
                             <th scope="col">Represa rota</th>
                         </tr>
@@ -94,29 +99,33 @@
                         @foreach($caudales as $key => $value)
                             <tr>
                                 <td>{{$key+1}}</td>
+                                <td>{{$normalizedArray[$key]}}</td>
+                                <td>{{$caudalesSinDesborde[$key]}}</td>
                                 <td>{{$value}}</td>
                                 <td>
-                                    @if($value < 15000)
+                                    @if($caudalesSinDesborde[$key] < 15000)
                                         <span class="text-success">No se abrieron compuertas</span>
-                                    @elseif($value >= 15000 && $value < 25000)
+                                    @elseif($caudalesSinDesborde[$key] >= 15000 && $caudalesSinDesborde[$key] < 25000)
                                         <span class="text-info">Se abrió la primera compuerta</span>
-                                    @elseif($value >= 25000 && $value < 32000)
+                                    @elseif($caudalesSinDesborde[$key] >= 25000 && $caudalesSinDesborde[$key] < 32000)
                                         <span class="text-warning">Se abrió la primera y segunda compuerta</span>
-                                    @elseif($value >= 32000 && $value < 40000)
+                                    @elseif($caudalesSinDesborde[$key] >= 32000 && $caudalesSinDesborde[$key] < 40000)
                                         <span class="text-warning">Se abrió la primera, segunda y tercera compuerta</span>
-                                    @elseif($value >= 40000)
+                                    @elseif($caudalesSinDesborde[$key] >= 40000)
                                         <span class="text-danger">Se abrió la primera, segunda, tercera y cuarta compuerta</span>
                                     @endif
                                 </td>
+                                <td>{{$energiaGenerada[$key]}}</td>
+                                <td>{{$energiaPerdida[$key]}}</td>
                                 <td>
-                                    @if($value <= 45000)
+                                    @if($caudalesSinDesborde[$key] <= 45000)
                                         <span class="text-success">No se activó la alerta roja</span>
                                     @else
                                         <span class="text-danger">Se activó la alerta roja</span>
                                     @endif
                                 </td>
                                 <td>
-                                    @if($value <= 52000)
+                                    @if($caudalesSinDesborde[$key] <= 52000)
                                         <span class="text-success">No se rompió la represa</span>
                                     @else
                                         <span class="text-danger">Se rompió la represa</span>

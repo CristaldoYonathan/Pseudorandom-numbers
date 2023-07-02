@@ -65,7 +65,7 @@ class NumerosAleatoriosController extends Controller
         $numeros[0] = intval($v1);
 
         for ($i=1; $i < $v2; $i++) {
-            $numeros[] = rand(1,10000);
+            $numeros[] = rand(1000,9999);
         }
 
         /*V i+1 =(a V i + c V i-k) mod m*/

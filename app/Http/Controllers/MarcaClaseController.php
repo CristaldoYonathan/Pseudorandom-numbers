@@ -30,11 +30,13 @@ class MarcaClaseController extends Controller
 
     public function marcaclases(Request $request)
     {
-        if ($request->input('metodo') == 'congruencia') {
+
+        if ($request->input('metodo') == 'congruencias') {
             $series = json_decode(NumerosCongruencia::get()->where('id', $request->input('serie'))->first()->valoresGeneradosC);
         } elseif ($request->input('metodo') == 'fibonacci') {
             $series = json_decode(Numerosfibonacci::get()->where('id', $request->input('serie'))->first()->valoresGeneradosF);
         }
+
 
         /*$series = [
             234, 587, 409, 674, 152, 876, 345, 982, 743, 521,
@@ -49,11 +51,24 @@ class MarcaClaseController extends Controller
             781, 479, 362, 654, 221, 745, 597, 419, 864, 512
         ];*/
 
-        if (isset($series)){
+        /*if (isset($series)){
             $maxValue = max($series);
 
             $normalizedArray = array_map(function($value) use ($maxValue) {
                 return $value / $maxValue;
+            }, $series);
+        }*/
+
+        if (isset($series)){
+            $maxValue = max($series);
+
+            $cantidadDigitos = strlen((string)$maxValue);
+
+            //agregar ceros a la derecha del 1
+            $divisor = (pow(10, +$cantidadDigitos));
+
+            $normalizedArray = array_map(function($value) use ($divisor) { //Arreglar error
+                return $value / $divisor;
             }, $series);
         }
 
